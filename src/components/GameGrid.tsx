@@ -1,30 +1,11 @@
 import React, { useEffect, useState } from "react";
-import apiClient from "../services/api-client";
+
 import axios from "axios";
 import { Text } from "@chakra-ui/react";
-
-interface Game {
-  id: number;
-  name: string;
-}
-
-interface FetchGameRes {
-  count: number;
-  results: Game[];
-}
+import useGames, { Game } from "../hooks/useGames";
 
 export default function GameGrid() {
-  const [games, setGames] = useState<Game[]>([]);
-  const [error, setError] = useState("");
-  useEffect(() => {
-    axios
-      .get<FetchGameRes>(
-        "https://rawg.io/api/games?key=cba9a66341de45bd8fee2f40dbd12a43"
-      )
-      .then((res) => setGames(res.data.results))
-      .catch((err) => setError(err.message));
-  }, []);
-  console.log(games);
+  const { games, error } = useGames();
   return (
     <>
       {error && <Text>{error}</Text>}
